@@ -2,7 +2,11 @@ var models = require('../models');
 
 module.exports = {
   messages: {
-    get: function(req, res) {}, // a function which handles a get request for all messages
+    get: function(req, res) {
+      models.messages.get(function(messages) {
+        res.json(messages);
+      });
+    }, // a function which handles a get request for all messages
     // send request to model
       // send status
     post: function(req, res) {
@@ -14,7 +18,11 @@ module.exports = {
 
   users: {
     // Ditto as above
-    get: function(req, res) {},
+    get: function(req, res) {
+      models.users.get(function(users) {
+        res.json(users);
+      });
+    },
     post: function(req, res) {
       // pass req to models.users.post
       models.users.post(req.body, function() {

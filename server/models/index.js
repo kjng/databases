@@ -44,7 +44,12 @@ var result;
 
 module.exports = {
   messages: {
-    get: function() {}, // a function which produces all the messages
+    get: function(callback) {
+      db.query('SELECT users.username, messages.text, messages.roomname FROM messages INNER JOIN users ON users.id = messages.user_id;', function(err, results) {
+        if (err) { throw err; }
+        callback(results);
+      });
+    }, // a function which produces all the messages
     post: function(reqBody, callback) {
       var user = reqBody.username;
       var message = reqBody.message;
@@ -56,7 +61,12 @@ module.exports = {
   },
 
   users: {
-    get: function() {},
+    get: function(callback) {
+      db.query('SELECT username FROM users;', function(err, results) {
+        if (err) { throw err; }
+        callback(results);
+      });
+    },
     post: function(reqBody, callback) {
       var user = reqBody.username;
       //  Insert user into users table
@@ -64,3 +74,9 @@ module.exports = {
     }
   }
 };
+
+// db.query('INSERT INTO users (username) VALUES ("daniel");');
+// db.query('SELECT username FROM users;', function(err, results) {
+//         if (err) { console.log(err); }
+//         console.log(results);
+//       });
