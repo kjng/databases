@@ -6,7 +6,7 @@ var db = require('../db');
 var insertUser = function(user, callback) {
   db.query(`INSERT INTO users (username) VALUES ("${user}")`, function(err) {
     if (err) { throw err; }
-    callback();
+    if (callback) { callback(); }
   });
 };
 
@@ -16,8 +16,8 @@ var insertMessage = function(user, message, roomname, callback) {
     if (err) {
     // If username is not in users table, adds it
       insertUser(user);
-      insertMessage(user, message, roomname);
-    } else {
+      insertMessage(user, message, roomname, callback);
+    } else if (callback) {
       callback();
     }
   });
@@ -45,7 +45,7 @@ var result;
 module.exports = {
   messages: {
     get: function(callback) {
-      db.query('SELECT users.username, messages.text, messages.roomname FROM messages INNER JOIN users ON users.id = messages.user_id;', function(err, results) {
+      db.query('SELECT messages.id, users.username, messages.text, messages.roomname FROM messages INNER JOIN users ON users.id = messages.user_id;', function(err, results) {
         if (err) { throw err; }
         callback(results);
       });
