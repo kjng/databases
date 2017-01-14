@@ -8,7 +8,7 @@ USE chat;
 
 CREATE TABLE users (
   id INTEGER NOT NULL AUTO_INCREMENT,
-  username VARCHAR(255) NULL,
+  username VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -16,9 +16,9 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
   id INTEGER NOT NULL AUTO_INCREMENT,
-  user_id INTEGER NULL,
-  text VARCHAR(255) NULL,
-  roomname VARCHAR(255) NULL,
+  user_id INTEGER NOT NULL,
+  text VARCHAR(255) NOT NULL,
+  roomname VARCHAR(255) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id) REFERENCES users (id)
 );

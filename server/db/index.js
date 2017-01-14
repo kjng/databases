@@ -12,8 +12,8 @@ dbConnection = mysql.createConnection({
 
 dbConnection.connect();
 
-// dbConnection.query('show tables', function(err, results) {
-//   console.log(results);
+// dbConnection.query('INSERT INTO users (username) VALUES ("Valjean")', function(err, results) {
+//   console.log(results, results.insertId);
 // });
 
 module.exports = dbConnection;
