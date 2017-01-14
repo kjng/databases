@@ -3,19 +3,41 @@ var db = require('../db');
 // Database Query Helpers
 
 // Insert user
-var insertUser = function(user) {
-  db.query(`INSERT INTO users (username) VALUES ("${user}")`);
+var insertUser = function(user, callback) {
+  db.query(`INSERT INTO users (username) VALUES ("${user}")`, function(err) {
+    if (err) { throw err; }
+    callback();
+  });
 };
 
-var insertMessage = function(user, message, roomname) {
+// Insert message (depends on inserUser)
+var insertMessage = function(user, message, roomname, callback) {
   db.query(`INSERT INTO messages (user_id, text, roomname) VALUES ((SELECT id FROM users WHERE username = "${user}"), "${message}", "${roomname}")`, function(err) {
     if (err) {
+    // If username is not in users table, adds it
       insertUser(user);
       insertMessage(user, message, roomname);
+    } else {
+      callback();
     }
   });
 };
 
+var result;
+
+// db.query(`SELECT users.username, messages.text, messages.roomname FROM messages INNER JOIN users ON users.id = messages.user_id;`, function(err, results) {
+//   result = results;
+//   result = result.map((message) => ({username: message.username, text: message.text, roomname: message.roomname}));
+//   console.log(result);
+// });
+
+// Queries db for messages with username, text, roomname...
+// SELECT users.username, messages.text, messages.roomname FROM messages INNER JOIN users ON users.id = messages.user_id;
+
+// Queries db for usernames
+// SELECT username FROM users;
+
+// INSERT INTO users (username) VALUES ("daniel");
 // INSERT INTO messages (user_id, text, roomname) VALUES ((SELECT id FROM users WHERE username = "daniel"), "hello", "hell");
 
 // insertMessage('daniel', 'hello', 'hell');
@@ -23,25 +45,22 @@ var insertMessage = function(user, message, roomname) {
 module.exports = {
   messages: {
     get: function() {}, // a function which produces all the messages
-    post: function(reqBody) {
+    post: function(reqBody, callback) {
       var user = reqBody.username;
       var message = reqBody.message;
       var roomname = reqBody.roomname;
 
-      insertMessage(user, message, roomname);
-      // If username is not there, insert username
-      // Insert message using user id
+      // Inserts message into messages table
+      insertMessage(user, message, roomname, callback);
     }
-    // a function which can be used to insert a message into the database
   },
 
   users: {
-    // Ditto as above.
     get: function() {},
-    post: function(reqBody) {
+    post: function(reqBody, callback) {
       var user = reqBody.username;
-      //   insert into users tables
-      insertUser(user);
+      //  Insert user into users table
+      insertUser(user, callback);
     }
   }
 };
