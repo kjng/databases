@@ -52,8 +52,6 @@ describe('Persistent Node Chat Server', function() {
         // Now if we look in the database, we should find the
         // posted message there.
 
-        // TODO: You might have to change this test to get all the data from
-        // your message table, since this is schema-dependent.
         var queryString = 'SELECT * FROM messages';
         var queryArgs = [];
 
@@ -61,7 +59,6 @@ describe('Persistent Node Chat Server', function() {
           // Should have one result:
           expect(results.length).to.equal(1);
 
-          // TODO: If you don't have a column named text, change this test.
           expect(results[0].text).to.equal('In mercy\'s name, three days is all I need.');
 
           done();

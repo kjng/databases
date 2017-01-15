@@ -1,8 +1,8 @@
 
 var app = {
 
-  //TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
-  //to all messages sent by the user
+  // TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
+  // to all messages sent by the user
   server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',

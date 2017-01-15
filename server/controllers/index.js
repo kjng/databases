@@ -7,10 +7,7 @@ module.exports = {
         res.json(messages);
       });
     }, // a function which handles a get request for all messages
-    // send request to model
-      // send status
     post: function(req, res) {
-      // console.log(req.body);
       models.messages.post(req.body, function() { res.sendStatus(200); });
     } // a function which handles posting a message to the database
   },
@@ -23,7 +20,6 @@ module.exports = {
       });
     },
     post: function(req, res) {
-      // pass req to models.users.post
       models.users.post(req.body, function() { res.sendStatus(200); });
     }
   }
